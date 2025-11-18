@@ -1,0 +1,28 @@
+services:
+  # Node.js Express application
+  a3-backend:
+    build: ./be
+    container_name: a3-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=785
+    # No ports exposed - only nginx can access this container
+    networks:
+      - app-network
+
+  # nginx reverse proxy
+  a3-nginx:
+    build: ./fe
+    container_name: a3-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:8080"  # Only nginx exposes ports to the host
+    depends_on:
+      - a3-backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
