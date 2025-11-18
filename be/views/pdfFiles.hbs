@@ -7,5 +7,16 @@
     </head>
     <body>
         <a href="/">HOME</a>
+        {{#if pdfFiles.length}}
+            <h1>Available PDF Files:</h1>
+            <ul>
+                {{#each pdfFiles}}
+                    <li><a href="/pdfFiles/{{this}}" target="_blank">{{this}}</a></li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <h1>No PDF files found.</h1>
+        {{/if}}
+        <a href="/pdfFiles/badPdf.pdf" target="_blank">badPdf.pdf (to test error handling)</a>
     </body>
 </html>
