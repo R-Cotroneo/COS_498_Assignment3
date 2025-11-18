@@ -6,6 +6,7 @@ const pdfDirectory = path.join(__dirname, '..', 'documents');
 // PDF File Cache
 let cache = { files: null };
 
+// Function to find PDF files with caching
 function findPdfFiles() {
     const now = Date.now();
     
