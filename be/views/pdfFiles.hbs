@@ -3,20 +3,50 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>PDF Files</title>
+        <title>PDF Resources - Music Hub</title>
+        <link rel="stylesheet" href="/static/style.css">
     </head>
     <body>
-        <a href="/">HOME</a>
-        {{#if pdfFiles.length}}
-            <h1>Available PDF Files:</h1>
-            <ul>
-                {{#each pdfFiles}}
-                    <li><a href="/pdfFiles/{{this}}" target="_blank">{{this}}</a></li>
-                {{/each}}
-            </ul>
-        {{else}}
-            <h1>No PDF files found.</h1>
-        {{/if}}
-        <a href="/pdfFiles/badPdf.pdf" target="_blank">badPdf.pdf (to test error handling)</a>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="/" class="navbar-logo">🎵 Music Hub</a>
+                <ul class="navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/pdfFiles">PDF Resources</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+            {{#if pdfFiles.length}}
+                <h1>📚 Music Learning Resources</h1>
+                <div class="comments-container">
+                    {{#each pdfFiles}}
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <h3 style="margin: 0; color: #2c3e50;">{{this.name}}</h3>
+                                <a href="/pdfFiles/{{this.path}}" target="_blank" class="btn">📖 View PDF</a>
+                            </div>
+                            <p style="margin: 1rem 0 0 0; color: #666; line-height: 1.6;">{{this.desc}}</p>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <h1>No PDF files found.</h1>
+                <div class="form-container">
+                    <p>It looks like there are no PDF resources available at the moment. Please check back later or contact the administrator.</p>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="/" class="btn">← Back to Home</a>
+                    </div>
+                </div>
+            {{/if}}
+            
+            <!-- Development/Testing Section -->
+            <div class="form-container" style="margin-top: 2rem; border-left: 4px solid #e74c3c;">
+                <h3 style="color: #e74c3c;">🔧 Development Testing</h3>
+                <p style="font-size: 0.9rem; color: #666;">This link is for testing error handling - it should display a "PDF does not exist" message:</p>
+                <a href="/pdfFiles/badPdf.pdf" target="_blank" class="btn btn-danger">Test Error Handling</a>
+            </div>
+        </main>
     </body>
 </html>
