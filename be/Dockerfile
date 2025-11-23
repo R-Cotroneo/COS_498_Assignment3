@@ -6,7 +6,10 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Remove any existing package-lock.json to force fresh install
+RUN rm -f package-lock.json
+
+# Install dependencies fresh for the current Node version
 RUN npm install
 
 # Copy source code

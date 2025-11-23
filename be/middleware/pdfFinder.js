@@ -1,15 +1,17 @@
 const path = require('path');
 const fs = require('fs');
+const Database = require('better-sqlite3');
 
 const pdfDirectory = path.join(__dirname, '..', 'documents');
+
+const dbPath = path.join(__dirname, '..', 'db', 'myDocs.db');
+const db = new Database(dbPath);
 
 // PDF File Cache
 let cache = { files: null };
 
 // Function to find PDF files with caching
-function findPdfFiles() {
-    const now = Date.now();
-    
+function findPdfFiles() {    
     // Check if cache is valid and should be used
     if (cache.files) {
         console.log('Returning cached PDF files');
@@ -20,11 +22,26 @@ function findPdfFiles() {
         // Read PDF directory for files
         const files = fs.readdirSync(pdfDirectory);
         const pdfFiles = files.filter(file => path.extname(file).toLowerCase() === '.pdf');
+        console.log('PDF files found in directory: ', pdfFiles);
+
+        // Validate files against database entries
+        // let validPdfFiles = pdfFiles; // Temporarily bypassing DB check
+        let validPdfFiles = [];
+        for (const file of pdfFiles) {
+            // Check if file is in database
+            const validFile = db.prepare('SELECT name, path, desc FROM documents WHERE path = ?').get(file);
+            if (validFile) {
+                validPdfFiles.push({ name: validFile.name, path: validFile.path, desc: validFile.desc });
+            } else {
+                validPdfFiles.push({ name: file, path: file, desc: 'N/A' });
+            }
+        }
         
         // Update cache
-        cache.files = pdfFiles;
+        cache.files = validPdfFiles;
+        console.log('PDF Files: ', validPdfFiles);
         
-        return pdfFiles;
+        return validPdfFiles;
     } catch (error) {
         console.error("Error reading PDF directory:", error);
         // Return cached files if available
