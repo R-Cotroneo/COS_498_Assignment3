@@ -33,6 +33,8 @@ function findPdfFiles() {
             if (validFile) {
                 validPdfFiles.push({ name: validFile.name, path: validFile.path, desc: validFile.desc });
             } else {
+                // This is specifically to test that files can still be displayed even if not in DB
+                // Utilizes the 'Kogan Volsche 2020 Cat Dating.pdf' test file
                 validPdfFiles.push({ name: file, path: file, desc: 'N/A' });
             }
         }
