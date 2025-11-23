@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- This page does not look that good, but it works for admin functions -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/style.css">
+        <title>Admin</title>
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="/" class="navbar-logo">🎵 Music Hub</a>
+                <ul class="navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/pdfFiles">PDF Resources</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main>
+            <h1>Admin Page</h1>
+            <p>Welcome, Admin! Here you can manage the application.</p>
+            <div class="form-container">
+                <h2>Add New PDF Resource</h2>
+                <form action="/admin/uploadPdf" method="POST">
+                    <div class="form-group">
+                        <label for="pdfName">PDF Name:</label>
+                        <input type="text" id="pdfName" name="pdfName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pdfPath">PDF File Path:</label>
+                        <input type="text" id="pdfPath" name="pdfPath" placeholder="e.g., MusicTheory.pdf" required>
+                        <small>Enter the filename of the PDF that exists in the documents directory</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pdfDesc">PDF Description:</label>
+                        <textarea id="pdfDesc" name="pdfDesc" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Add PDF Resource</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>Delete PDF Resource</h2>
+                <form action="/admin/deletePdf" method="POST">
+                    <div class="form-group">
+                        <label for="pdfPath">PDF Resource ID:</label>
+                        <input type="text" id="pdfPath" name="pdfPath" required>
+                    </div>
+                    <button type="submit" class="btn">Delete PDF Resource</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>Update PDF Resource</h2>
+                <form action="/admin/updatePdf" method="POST">
+                    <div class="form-group">
+                        <label for="pdfPath">PDF File You Want to Update:</label>
+                        <input type="text" id="pdfPath" name="pdfPath" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pdfName">New PDF Name:</label>
+                        <input type="text" id="pdfName" name="pdfName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pdfDesc">New PDF Description:</label>
+                        <textarea id="pdfDesc" name="pdfDesc" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Update PDF Resource</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>View All PDF Resources</h2>
+                <div class="admin-actions">
+                    <a href="/admin/getAllPdfs" class="btn">View All PDFs</a>
+                </div>
+                
+                <div class="query-display">
+                    <h3>Current PDF Resources:</h3>
+                    {{#if error}}
+                        <p class="error">{{error}}</p>
+                    {{/if}}
+                    {{#if pdfFiles.length}}
+                        <div class="pdf-list">
+                            {{#each pdfFiles}}
+                                <div class="pdf-item">
+                                    <p><strong>ID:</strong> {{this.id}}</p>
+                                    <p><strong>Name:</strong> {{this.name}}</p>
+                                    <p><strong>Path:</strong> {{this.path}}</p>
+                                    <p><strong>Description:</strong> {{this.desc}}</p>
+                                    <hr>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <p>No PDF resources found in the database.</p>
+                    {{/if}}
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
